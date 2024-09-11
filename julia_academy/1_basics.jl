@@ -15,7 +15,7 @@ println(typeof(🍣))
 
 #= Exercise - Assign 365 to a variable named days. Convert days to a float and assign it to
 variable days_flloat
-=# 
+=#
 days = 365
 days_float = convert(Float32, days)
 
