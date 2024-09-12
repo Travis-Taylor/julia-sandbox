@@ -16,7 +16,10 @@ candidates::Vector{String} = ["Sheetal", "James", "Natsuki", "Kalae"]
 candidate_popularity = Dict{String,Float32}()
 
 
-## Randomized Inputs ##
+## Inputs ##
+# Voting Population
+num_voters = 1000000
+
 # Normalized candidate popularity in range [0-1]
 for candidate ∈ candidates
     candidate_popularity[candidate] = rand(Float32)
@@ -31,9 +34,6 @@ candidate_popularity[writein] = rand(0.0:0.01:0.15)
 writein_likelihood = round(candidate_popularity[writein] * 100, sigdigits=3)
 println("Candidate $writein likelihood: $writein_likelihood%")
 
-
-# Voting Population
-num_voters = 1000000
 
 ## Generate votes ##
 votes = generate_votes(num_voters, candidate_popularity)
