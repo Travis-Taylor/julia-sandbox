@@ -29,15 +29,6 @@ candidate_popularity = Dict{String,Float32}()
 evaluated with `gen_write_in` when Vote is initialized =#
 writein = "write-in"
 
-# Assume write-in candidates are effectively random
-function gen_write_in(max_num::Int)::String
-    "SomeCandidate$(rand(0:max_num))"
-end
-push!(candidates, writein)
-# Also assume write-in candidates are fairly unlikely
-candidate_popularity[writein] = rand(0.0:0.01:0.15)
-writein_likelihood = round(candidate_popularity[writein] * 100, sigdigits=3)
-
 
 ## Randomized Inputs ##
 # Normalized popularity in range [0-1]
@@ -47,12 +38,20 @@ for candidate ∈ candidates
     println("Candidate $candidate approval rating: $approval_percent%")
 end
 
+# Assume write-in candidates are effectively random
+function gen_write_in(max_num::Int)::String
+    "SomeCandidate$(rand(0:max_num))"
+end
+push!(candidates, writein)
+# Also assume write-in candidates are fairly unlikely
+candidate_popularity[writein] = rand(0.0:0.01:0.15)
+writein_likelihood = round(candidate_popularity[writein] * 100, sigdigits=3)
+
 println("Candidate $writein likelihood: $writein_likelihood%")
 
 
 # Voting Population
-# num_voters = 1000000
-num_voters = 10000
+num_voters = 1000000
 majority = num_voters / 2
 
 ## Generate votes ##
