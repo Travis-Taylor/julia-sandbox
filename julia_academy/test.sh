@@ -3,6 +3,7 @@ set -e
 # Test all the julia files in this dir
 SCRIPT_DIR=$(dirname $(readlink -f "$0"))
 verbose=false
+target_file=
 
 usage() {
     printf "Usage:\n\t$0 [filename] [-v]\n"
@@ -16,11 +17,13 @@ while [[ $# -gt 0 ]]; do
             usage
             ;;
         -v)
+            echo "Verbose"
             verbose=true
             shift
             ;;
         *)
-            break;
+            target_file=$1
+            shift
             ;;
     esac
 done
@@ -32,19 +35,13 @@ else
     exec 3>&1
 fi
 
-if [[ -n $1 ]]; then
-    if [[ $1 == "-h" ]]; then
-        usage
-    fi
-    if [[ -f $1 ]]; then
-        echo "Running $1" >&3
-        julia $1
-        exit 0
-    fi
+if [[ -n $target_file && -f $target_file ]]; then
+    echo "Running $target_file" >&3
+    julia $target_file
+    exit 0
 fi
 
 for julia_file in $SCRIPT_DIR/*.jl; do
     echo "Running $(basename $julia_file)" >&3
-    # Quiet stdout, but emit stderr
     julia $julia_file
 done
